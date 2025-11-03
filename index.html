@@ -11,9 +11,10 @@
             --text: #2b1e1e;
             /* texto */
             --pink1: #ff9ecb;
-            /* corazón base */
-            --pink2: #ff7fb0;
-            /* degradé */
+            /* rosa base */
+            --card-bg: rgba(255, 255, 255, 0.25);
+            /* Fondo de tarjeta "vidrio" */
+            --card-border: rgba(255, 255, 255, 0.4);
             --bubble: rgba(255, 255, 255, .38);
         }
 
@@ -146,45 +147,27 @@
             50% { transform: translateY(6px) }
         }
 
-        /* Corazón grande con clip para mantener texto dentro */
-        .heart-card {
-            width: min(860px, 92vw);
-            filter: drop-shadow(0 28px 36px rgba(0, 0, 0, .22))
+        /* === NUEVA TARJETA DE TEXTO (REEMPLAZA AL CORAZÓN) === */
+        .text-card {
+            width: min(700px, 92vw);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(12px);
+            /* Efecto vidrio esmerilado */
+            border-radius: 24px;
+            padding: 28px 32px;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
         }
 
-        .heart-svg {
-            width: 100%;
-            height: auto;
-            display: block
-        }
-
-        .heart-fill {
-            fill: url(#gPink);
-            stroke: #000;
-            stroke-width: 8px;
-            filter: drop-shadow(0 24px 30px rgba(0, 0, 0, .25))
-        }
-
-        /* ESTA CAJA DE TEXTO ESTÁ AJUSTADA */
-        .heart-text {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* Quitamos el padding que no ayudaba */
-            padding: 0;
-        }
-
-        /* ESTE PÁRRAFO ESTÁ AJUSTADO */
-        .heart-text p {
+        .text-card p {
             margin: 0;
-            /* **** AJUSTE: Reducido de 21px a 18px **** */
-            font-size: 18px;
-            line-height: 1.5;
+            font-size: 20px;
+            /* Tamaño de letra legible y fijo */
+            line-height: 1.6;
             text-align: center;
             color: #1d0f12;
-            font-weight: 700;
+            /* Texto oscuro para leerse bien */
+            font-weight: 600;
         }
     </style>
 </head>
@@ -201,29 +184,16 @@
     <section class="scene" id="scene1">
         <div class="wrap">
             <h1 class="title">¡TE AMO DEMASIADO!</h1>
-            <div class="heart-card" id="heart1">
-                <svg class="heart-svg" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <path id="heartShape" d="M210,50 C168,8 82,28 66,114 c-11,64 40,116 144,206 c104,-90 155,-142 144,-206 C294,28 228,8 210,50 Z" />
-                        <linearGradient id="gPink" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#ff9ecb" />
-                            <stop offset="100%" stop-color="#ff7fb0" />
-                        </linearGradient>
-                    </defs>
-                    <use href="#heartShape" class="heart-fill" />
-                    
-                    <foreignObject x="70" y="100" width="280" height="210">
-                        <div xmlns="http://www.w3.org/1999/xhtml" class="heart-text">
-                            <p>
-                                Agustina, te amo demasiado.
-                                Sos lo mejor que me pasó en la vida. Soy capaz de todo por ti, movería cielo, mar, tierra y aire, pero no soy capaz de hablarle a otra mujer, ni por aburrimiento ni porque no hablemos tan seguido.
-                                En serio quiero demostrarte que mi corazón te pertenece solo a ti y a nadie más.
-                                Te amo 🤍
-                            </p>
-                        </div>
-                    </foreignObject>
-                </svg>
+
+            <div class="text-card">
+                <p>
+                    Agustina, te amo demasiado.
+                    Sos lo mejor que me pasó en la vida. Soy capaz de todo por ti, movería cielo, mar, tierra y aire, pero no soy capaz de hablarle a otra mujer, ni por aburrimiento ni porque no hablemos tan seguido.
+                    En serio quiero demostrarte que mi corazón te pertenece solo a ti y a nadie más.
+                    Te amo 🤍
+                </p>
             </div>
+
         </div>
     </section>
     <script>
