@@ -40,4 +40,200 @@
     margin:0; font-size: clamp(28px, 8vw, 46px); font-weight:900; letter-spacing:.02em;
   }
   .enterBtn{
-    border:
+    border:0; border-radius:18px; padding:12px 22px; font-size:16px; font-weight:700;
+    background: var(--pink1); color:#3a0f1f; cursor:pointer;
+    box-shadow: 0 10px 26px rgba(0,0,0,.12), inset 0 0 0 2px var(--ring);
+  }
+  .enterHint{ max-width:520px; opacity:.75; font-size:13px }
+
+  /* === BOTÓN FLOTANTE AUDIO (abajo-derecha, burbuja traslúcida) === */
+  .audio-toggle{
+    position:fixed; right:18px; bottom:18px; z-index:4;
+    width:58px; height:58px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background: var(--bubble);
+    backdrop-filter: blur(10px);
+    border:1px solid rgba(0,0,0,.15);
+    box-shadow: 0 10px 24px rgba(0,0,0,.15);
+    cursor:pointer; user-select:none;
+    transition: transform .12s ease;
+  }
+  .audio-toggle:active{ transform: scale(0.96); }
+  .audio-toggle span{ font-size:24px; line-height:1 }
+
+  /* === ESCENA 1 === */
+  .scene{
+    position:relative; z-index:2; width:100%; height:100%;
+    display:grid; place-items:center; padding:min(6vh,48px);
+  }
+  .stack{ width:min(900px, 92vw); display:grid; gap:24px; place-items:center; }
+
+  /* Título con leve oscilación */
+  .title{
+    margin:0; text-align:center; font-weight:900;
+    font-size: clamp(34px, 8vw, 72px);
+    color:#ff2f7b;
+    text-shadow: 0 2px 0 #fff, 0 0 18px rgba(255,120,180,.55);
+    animation: floatY 3.6s ease-in-out infinite;
+  }
+  @keyframes floatY{
+    0%,100% { transform: translateY(-6px) }
+    50%     { transform: translateY(6px)  }
+  }
+
+  /* Corazón con texto (SVG) – SIN efecto de goteo */
+  .heart-card{ width:min(640px, 90vw); filter: drop-shadow(0 22px 30px rgba(0,0,0,.18)); }
+  .heart-svg{ width:100%; height:auto; display:block; }
+  .heart-fill{
+    fill: url(#gPink);
+    stroke: #000; stroke-width:6px;
+    filter: drop-shadow(0 20px 24px rgba(0,0,0,.25));
+  }
+  .heart-text{
+    font-size: clamp(14px, 3.2vw, 18px);
+    line-height: 1.55;
+    color: #1d0f12;
+    font-weight: 600;
+    text-align: center;
+    padding: 18px 22px 24px;
+  }
+</style>
+</head>
+<body>
+
+<!-- 1) Fondo de corazones/gatitos “tipo Matrix” -->
+<canvas id="fx"></canvas>
+
+<!-- 2) Audio (arranca al tocar el botón) -->
+<audio id="bgm" src="musica.mp3" preload="auto" playsinline loop></audio>
+
+<!-- 3) Overlay de entrada -->
+<div class="gate" id="gate">
+  <h1>¡TOCA PARA ENTRAR!</h1>
+  <button class="enterBtn" id="enterBtn">Si me amás, toca aquí</button>
+  <div class="enterHint">La música seguirá sonando en toda la experiencia. Y si no querés, no pasa nada si no tocás.</div>
+</div>
+
+<!-- 4) Botón de audio fijo abajo-derecha -->
+<button class="audio-toggle" id="audioToggle" aria-label="Alternar sonido">
+  <span>🔇</span>
+</button>
+
+<!-- 5) ESCENA 1 -->
+<section class="scene" id="scene1">
+  <div class="stack">
+    <h1 class="title">¡TE AMO DEMASIADO!</h1>
+
+    <div class="heart-card" id="heart1">
+      <svg class="heart-svg" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gPink" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#ff9ecb"/>
+            <stop offset="100%" stop-color="#ff7fb0"/>
+          </linearGradient>
+        </defs>
+        <!-- forma de corazón con borde negro -->
+        <path class="heart-fill" d="M160,36
+             C130,5 60,20 48,90
+             c-8,52 30,92 112,156
+             c82,-64 120,-104 112,-156
+             C260,20 190,5 160,36 Z"/>
+        <!-- caja de texto dentro del corazón -->
+        <foreignObject x="28" y="66" width="264" height="180">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="heart-text">
+            Agostina, te amo demasiado. Sos lo mejor que me pasó en la vida. Soy capaz de todo por ti:
+            mover tierra, aire y cielo. Pero no soy capaz de hablarle a otra mujer.
+            Este tiempo que te tomes, voy a demostrarte que no habrá ninguna otra,
+            ni por distracción, ni por aburrimiento, hasta que estés lista.
+            Voy a tomarme todo el tiempo necesario para mostrarte
+            que te amo y te elegí solo a vos. Gracias por todo. Te amo.
+          </div>
+        </foreignObject>
+      </svg>
+    </div>
+
+  </div>
+</section>
+
+<script>
+/* ======= AUDIO + BOTÓN FLOTANTE ======= */
+const audio = document.getElementById('bgm');
+const gate   = document.getElementById('gate');
+const enter  = document.getElementById('enterBtn');
+const toggle = document.getElementById('audioToggle');
+
+enter.addEventListener('click', async ()=>{
+  try{
+    audio.volume = 1.0;          // 100%
+    audio.muted  = false;
+    await audio.play();
+    gate.style.display = 'none';
+    toggle.textContent = '🔊';
+  }catch(e){
+    alert('Si no se escucha, toca de nuevo para habilitar el sonido.');
+  }
+});
+
+toggle.addEventListener('click', ()=>{
+  audio.muted = !audio.muted;
+  toggle.textContent = audio.muted ? '🔇' : '🔊';
+});
+
+/* ======= FONDO “MATRIX” EMOJI (sin deformar, low-FPS look) ======= */
+const canvas = document.getElementById('fx');
+const ctx = canvas.getContext('2d');
+let W=0,H=0,dpr=1;
+function resize(){
+  dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  W = canvas.width  = Math.floor(window.innerWidth  * dpr);
+  H = canvas.height = Math.floor(window.innerHeight * dpr);
+  initCols();
+}
+window.addEventListener('resize', resize, {passive:true});
+resize();
+
+const allGlyphs = ['💖','💗','💕','💞','💓','🐱','😺','😻','😸'];
+let cols = [];
+function initCols(){
+  cols = [];
+  const colW = Math.floor(26*dpr);                  // ancho de columna
+  const n = Math.ceil(W / colW);
+  for(let i=0;i<n;i++){
+    const size = (18 + Math.random()*14);           // tamaño fijo por columna
+    const glyph = allGlyphs[(Math.random()*allGlyphs.length)|0]; // emoji fijo por columna
+    cols.push({
+      x: i*colW + colW/2,
+      y: Math.random()*-H,
+      speed: (H/7 + Math.random()*H/6),             // px/s
+      step: 1/12,                                    // 12 fps “stop-motion”
+      acc: 0,
+      glyph, size
+    });
+  }
+}
+
+function draw(){
+  // leve estela, sin deformar
+  ctx.fillStyle = 'rgba(242,230,214,0.18)'; // var(--bg) con alpha
+  ctx.fillRect(0,0,W,H);
+
+  for(const c of cols){
+    c.acc += 1/60;                    // base 60Hz
+    if(c.acc >= c.step){              // avanzar a saltitos (look low-FPS)
+      c.y += c.speed * c.acc;
+      c.acc = 0;
+    }
+    if(c.y > H + 40*dpr) c.y = -Math.random()*H*0.3;
+
+    ctx.font = `${Math.floor(c.size*dpr)}px "Apple Color Emoji","Noto Color Emoji",system-ui`;
+    ctx.lineWidth = 4*dpr;
+    ctx.strokeStyle = 'rgba(0,0,0,.6)'; // borde negro
+    ctx.strokeText(c.glyph, c.x, c.y);
+    ctx.fillText(c.glyph, c.x, c.y);
+  }
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>
