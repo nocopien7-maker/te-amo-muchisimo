@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>¡Te amo demasiado! 💖</title>
+<title>¡TE AMO DEMASIADO!</title>
 <style>
   :root{
     --bg: #f2e6d6;              /* beige/crema de fondo */
@@ -11,272 +11,33 @@
     --pink1:#ff9ecb;            /* corazón rosado base */
     --pink2:#ff7fb0;            /* rosado más intenso para degradé */
     --ring: rgba(0,0,0,.25);    /* borde/sombra suave */
-    --bubble: rgba(255,255,255,.35);
+    --bubble: rgba(255,255,255,.38);
   }
-  *{box-sizing:border-box}
-  html,body{height:100%}
+  *{ box-sizing:border-box }
+  html,body{ height:100% }
   body{
     margin:0; background:var(--bg); color:var(--text);
     font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Arial, "Noto Color Emoji","Apple Color Emoji", sans-serif;
-    overflow:hidden; /* de momento, pantalla fija */
+    overflow:hidden;
   }
 
   /* === FONDO: “matrix” de emojis (corazones + gatitos) en canvas === */
-  canvas#fx{
+  #fx{
     position:fixed; inset:0; z-index:0; display:block;
     background:
-      radial-gradient(1200px 700px at 50% -250px, rgba(255,170,210,.25), transparent 60%),
+      radial-gradient(1200px 700px at 50% -220px, rgba(255,170,210,.18), transparent 60%),
       var(--bg);
   }
 
-  /* === OVERLAY de inicio para habilitar audio con 1 toque === */
+  /* === OVERLAY de inicio (un toque para habilitar audio) === */
   .gate{
     position:fixed; inset:0; z-index:3;
     background: var(--bg);
     display:flex; align-items:center; justify-content:center; flex-direction:column;
-    gap:16px;
+    gap:16px; text-align:center; padding:24px;
   }
-  .gate h1{ margin:0; font-size: clamp(28px, 7vw, 44px); }
+  .gate h1{
+    margin:0; font-size: clamp(28px, 8vw, 46px); font-weight:900; letter-spacing:.02em;
+  }
   .enterBtn{
-    border:0; border-radius:999px; padding:14px 22px; font-size:18px; font-weight:700;
-    background: var(--pink1); color:#3a0f1f; cursor:pointer;
-    box-shadow: 0 10px 30px rgba(0,0,0,.12), inset 0 0 0 2px var(--ring);
-  }
-  .enterHint{ opacity:.7; font-size:14px }
-
-  /* === BOTÓN FLOTANTE AUDIO (abajo-derecha, burbuja translúcida) === */
-  .audio-toggle{
-    position:fixed; right:18px; bottom:18px; z-index:4;
-    width:58px; height:58px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    background: var(--bubble);
-    backdrop-filter: blur(10px);
-    border:1px solid rgba(0,0,0,.15);
-    box-shadow: 0 10px 24px rgba(0,0,0,.15);
-    cursor:pointer; user-select:none;
-    transition: transform .12s ease;
-  }
-  .audio-toggle:active{ transform: scale(0.96); }
-  .audio-toggle span{ font-size:24px; line-height:1 }
-  .audio-toggle[data-muted="true"] span{ filter: grayscale(0) }
-  .audio-toggle[data-muted="false"] span{ filter: none }
-
-  /* === CONTENEDOR DE ESCENA 1 (centrado) === */
-  .scene{
-    position:relative; z-index:2; width:100%; height:100%;
-    display:grid; place-items:center;
-    padding: min(6vh,48px);
-  }
-  .stack{ width:min(900px, 92vw); display:grid; gap:24px; place-items:center; }
-
-  /* Título flotante con “péndulo” suave */
-  .title{
-    margin:0; text-align:center; font-weight:800;
-    font-size: clamp(34px, 8vw, 72px);
-    color:#ff2f7b;
-    text-shadow: 0 2px 0 #fff, 0 0 18px rgba(255,120,180,.55);
-    animation: floatY 3.6s ease-in-out infinite;
-  }
-  @keyframes floatY{
-    0%,100% { transform: translateY(-6px) }
-    50%     { transform: translateY(6px)  }
-  }
-
-  /* Tarjeta-corazón con texto dentro (SVG) */
-  .heart-card{
-    position:relative;
-    width:min(600px, 88vw);
-    filter: drop-shadow(0 22px 30px rgba(0,0,0,.18));
-  }
-  .heart-svg{ width:100%; height:auto; display:block; }
-  .heart-fill{
-    fill: url(#gPink);
-    stroke: #000; stroke-width:6px;
-    filter: drop-shadow(0 20px 24px rgba(0,0,0,.25));
-  }
-  .heart-text{
-    font-size: clamp(14px, 3.6vw, 20px);
-    line-height: 1.5;
-    color: #1d0f12;
-    font-weight: 600;
-    text-align: center;
-    padding: 18px 22px 26px;
-  }
-
-  /* Efecto “goteo de tinta”: se activa con .ink-on en .heart-card */
-  .ink::after{
-    content:""; position:absolute; left:0; top:0; width:100%; height:0%;
-    background:
-      radial-gradient(16px 16px at 25% 0, rgba(0,0,0,.0) 60%, rgba(0,0,0,1) 61%),
-      radial-gradient(22px 22px at 60% -6px, rgba(0,0,0,0) 58%, rgba(0,0,0,1) 60%),
-      linear-gradient(#000,#000);
-    clip-path: polygon(0 0,100% 0,100% var(--h,0),0 var(--h,0));
-    transition: --h .9s cubic-bezier(.2,.6,.2,1);
-    z-index:1; border-radius:16px;
-  }
-  .ink.ink-on .heart-fill{ fill:#000; transition: fill .9s ease }
-  .ink.ink-on::after{ --h:100% }
-  .ink-off .heart-fill{ fill:url(#gPink) }
-
-  /* Texto de pie de página (lo añadiremos en la página 2) */
-</style>
-</head>
-<body>
-
-<!-- 1) Canvas de efectos de corazones/gatitos “tipo Matrix” -->
-<canvas id="fx"></canvas>
-
-<!-- 2) Audio (empieza en pausa, lo activamos con un toque) -->
-<audio id="bgm" src="musica.mp3" preload="auto" playsinline loop></audio>
-
-<!-- 3) Overlay para primer toque -->
-<div class="gate" id="gate">
-  <h1>¡Toca para entrar 💞!</h1>
-  <button class="enterBtn" id="enterBtn">Reproducir música al 100%</button>
-  <div class="enterHint">La música seguirá sonando en toda la experiencia.</div>
-</div>
-
-<!-- 4) Botón burbuja fijo para mutear/desmutear -->
-<button class="audio-toggle" id="audioToggle" data-muted="true" aria-label="Alternar sonido">
-  <span>🔇</span>
-</button>
-
-<!-- 5) ESCENA 1: Título + corazón con texto -->
-<section class="scene" id="scene1">
-  <div class="stack">
-
-    <h1 class="title">¡TE AMO DEMASIADO!</h1>
-
-    <div class="heart-card ink" id="heart1">
-      <svg class="heart-svg" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gPink" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"  stop-color="#ff9ecb"/>
-            <stop offset="100%" stop-color="#ff7fb0"/>
-          </linearGradient>
-        </defs>
-        <!-- forma de corazón con borde negro -->
-        <path class="heart-fill" d="M160,36
-             C130,5 60,20 48,90
-             c-8,52 30,92 112,156
-             c82,-64 120,-104 112,-156
-             C260,20 190,5 160,36 Z"/>
-        <!-- caja de texto dentro del corazón -->
-        <foreignObject x="35" y="70" width="250" height="170">
-          <div xmlns="http://www.w3.org/199/xhtml" class="heart-text">
-            Agostina, te amo demasiado. No sé si en esta vida hay que elegir,
-            dejar que las cosas lleguen o no hacer nada. Pero llegaste a mi vida,
-            te elegí a vos, y nunca —pero nunca— voy a arrepentirme de haberlo hecho.
-          </div>
-        </foreignObject>
-      </svg>
-    </div>
-
-  </div>
-</section>
-
-<script>
-/* ========= AUDIO + BOTÓN FLOTANTE ========= */
-const audio = document.getElementById('bgm');
-const gateBtn = document.getElementById('enterBtn');
-const gate = document.getElementById('gate');
-const toggleBtn = document.getElementById('audioToggle');
-
-// primer toque: arranca música a 100% sin mute
-gateBtn.addEventListener('click', async ()=>{
-  try{
-    audio.volume = 1.0;
-    audio.muted = false;
-    await audio.play();
-    gate.style.display = 'none';
-    toggleBtn.dataset.muted = 'false';
-    toggleBtn.querySelector('span').textContent = '🔊';
-  }catch(e){
-    alert('Si no se escucha, toca de nuevo para habilitar el sonido.');
-  }
-});
-
-// alternar mute / unmute sin pausar
-toggleBtn.addEventListener('click', ()=>{
-  const isMuted = audio.muted;
-  audio.muted = !isMuted;
-  toggleBtn.dataset.muted = String(!isMuted);
-  toggleBtn.querySelector('span').textContent = isMuted ? '🔊' : '🔇';
-});
-
-/* ========= EFECTO “GOTEO” AL TOCAR EL CORAZÓN ========= */
-const heart1 = document.getElementById('heart1');
-let inkActive = false;
-heart1.addEventListener('click', ()=>{
-  inkActive = !inkActive;
-  heart1.classList.toggle('ink-on',  true);
-  setTimeout(()=>{    // volver al rosa
-    heart1.classList.remove('ink-on');
-    heart1.classList.add('ink-off');
-    setTimeout(()=> heart1.classList.remove('ink-off'), 300);
-  }, 950);
-});
-
-/* ========= FONDO TIPO “MATRIX” CON EMOJIS Y FPS BAJO ========= */
-const canvas = document.getElementById('fx');
-const ctx = canvas.getContext('2d');
-let W=0,H=0, dpr=1;
-function resize(){
-  dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-  W = canvas.width  = Math.floor(window.innerWidth  * dpr);
-  H = canvas.height = Math.floor(window.innerHeight * dpr);
-}
-window.addEventListener('resize', resize, {passive:true});
-resize();
-
-// columnas de caída (estilo matrix pero con emojis)
-const glyphs = ['💖','💗','💕','💞','💓','🐱','😺','😻','😸'];
-const cols = [];
-function initCols(){
-  cols.length = 0;
-  const colWidth = Math.floor(24*dpr);
-  const n = Math.ceil(W / colWidth);
-  for(let i=0;i<n;i++){
-    cols.push({
-      x: i*colWidth + colWidth/2,
-      y: Math.random()*-H,
-      speed: (H/8 + Math.random()*H/6), // px/s
-      step: 1/12, // 12 fps “stop motion”
-      acc: 0
-    });
-  }
-}
-initCols();
-window.addEventListener('resize', initCols, {passive:true});
-
-function draw(){
-  // clara transparencia para estela
-  ctx.fillStyle = `rgba(242,230,214,0.20)`; // var(--bg) con alpha
-  ctx.fillRect(0,0,W,H);
-
-  const now = performance.now()/1000;
-  for(const c of cols){
-    c.acc += 1/60; // base 60Hz
-    if(c.acc >= c.step){
-      c.y += c.speed * c.acc; // “saltitos” para look low-FPS
-      c.acc = 0;
-    }
-    if(c.y > H + 40*dpr){
-      c.y = -Math.random()*H*0.3;
-    }
-    const emoji = glyphs[(Math.random()*glyphs.length)|0];
-    const size = 18 + Math.random()*16;
-    ctx.font = `${Math.floor(size*dpr)}px "Apple Color Emoji","Noto Color Emoji",system-ui`;
-    // borde negro tipo “stroke”
-    ctx.lineWidth = 4*dpr;
-    ctx.strokeStyle = 'rgba(0,0,0,.6)';
-    ctx.strokeText(emoji, c.x, c.y);
-    // relleno (emoji)
-    ctx.fillText(emoji, c.x, c.y);
-  }
-  requestAnimationFrame(draw);
-}
-requestAnimationFrame(draw);
-</script>
-</body>
-</html>
+    border:
