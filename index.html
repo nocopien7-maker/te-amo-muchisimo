@@ -6,21 +6,21 @@
 <title>¡TE AMO DEMASIADO!</title>
 <style>
   :root{
-    --bg: #f2e6d6;              /* beige/crema de fondo */
-    --text:#2b1e1e;             /* texto principal (oscuro) */
-    --pink1:#ff9ecb;            /* corazón rosado base */
-    --pink2:#ff7fb0;            /* rosado más intenso para degradé */
+    --bg: #f2e6d6;              /* beige/crema */
+    --text:#2b1e1e;             /* texto */
+    --pink1:#ff9ecb;            /* corazón base */
+    --pink2:#ff7fb0;            /* degradé */
     --bubble: rgba(255,255,255,.38);
   }
-  *{ box-sizing:border-box }
-  html,body{ height:100% }
+  *{box-sizing:border-box}
+  html,body{height:100%}
   body{
     margin:0; background:var(--bg); color:var(--text);
     font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Arial, "Noto Color Emoji","Apple Color Emoji", sans-serif;
     overflow:hidden;
   }
 
-  /* === FONDO: estilo “primer código” (emoji alternando y con estela/blur) === */
+  /* Fondo emoji (estilo 1, con estela y variación) */
   #fx{
     position:fixed; inset:0; z-index:0; display:block;
     background:
@@ -28,111 +28,105 @@
       var(--bg);
   }
 
-  /* === OVERLAY de entrada === */
+  /* Entrada */
   .gate{
-    position:fixed; inset:0; z-index:3; background: var(--bg);
+    position:fixed; inset:0; z-index:3; background:var(--bg);
     display:flex; align-items:center; justify-content:center; flex-direction:column;
     gap:16px; text-align:center; padding:24px;
   }
-  .gate h1{ margin:0; font-size: clamp(28px, 8vw, 46px); font-weight:900; letter-spacing:.02em; }
+  .gate h1{margin:0;font-size:clamp(28px,8vw,46px);font-weight:900;letter-spacing:.02em}
   .enterBtn{
-    border:0; border-radius:18px; padding:12px 22px; font-size:16px; font-weight:700;
-    background: var(--pink1); color:#3a0f1f; cursor:pointer;
-    box-shadow: 0 10px 26px rgba(0,0,0,.12), inset 0 0 0 2px rgba(0,0,0,.25);
+    border:0;border-radius:18px;padding:12px 22px;font-size:16px;font-weight:700;
+    background:var(--pink1);color:#3a0f1f;cursor:pointer;
+    box-shadow:0 10px 26px rgba(0,0,0,.12), inset 0 0 0 2px rgba(0,0,0,.25);
   }
-  .enterHint{ max-width:560px; opacity:.8; font-size:14px }
+  .enterHint{max-width:560px;opacity:.85;font-size:14px}
 
-  /* === BOTÓN AUDIO fijo abajo-derecha === */
+  /* Botón audio fijo */
   .audio-toggle{
-    position:fixed; right:18px; bottom:18px; z-index:4;
-    width:58px; height:58px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    background: var(--bubble); backdrop-filter: blur(10px);
-    border:1px solid rgba(0,0,0,.15);
-    box-shadow: 0 10px 24px rgba(0,0,0,.15);
-    cursor:pointer; user-select:none; transition: transform .12s ease;
+    position:fixed;right:18px;bottom:18px;z-index:4;
+    width:58px;height:58px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--bubble);backdrop-filter:blur(10px);
+    border:1px solid rgba(0,0,0,.15);box-shadow:0 10px 24px rgba(0,0,0,.15);
+    cursor:pointer;user-select:none;transition:transform .12s ease;
   }
-  .audio-toggle:active{ transform: scale(0.96); }
-  .audio-toggle span{ font-size:24px; line-height:1 }
+  .audio-toggle:active{transform:scale(.96)}
+  .audio-toggle span{font-size:24px;line-height:1}
 
-  /* === ESCENA 1 === */
-  .scene{ position:relative; z-index:2; width:100%; height:100%; overflow:auto; }
-  .wrap{ min-height:100%; display:flex; flex-direction:column; align-items:center; padding:7vh 24px 18vh; gap:28px; }
+  /* Escena */
+  .scene{position:relative;z-index:2;width:100%;height:100%;overflow:auto}
+  .wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;padding:7vh 24px 18vh;gap:28px}
 
   .title{
-    margin:0; text-align:center; font-weight:900;
-    font-size: clamp(34px, 8vw, 72px);
-    color:#ff2f7b;
-    text-shadow: 0 2px 0 #fff, 0 0 18px rgba(255,120,180,.55);
-    animation: floatY 3.6s ease-in-out infinite;
+    margin:0;text-align:center;font-weight:900;
+    font-size:clamp(34px,8vw,72px);color:#ff2f7b;
+    text-shadow:0 2px 0 #fff,0 0 18px rgba(255,120,180,.55);
+    animation:floatY 3.6s ease-in-out infinite;
   }
-  @keyframes floatY{ 0%,100%{transform:translateY(-6px)} 50%{transform:translateY(6px)} }
+  @keyframes floatY{0%,100%{transform:translateY(-6px)}50%{transform:translateY(6px)}}
 
-  /* Corazón grande con texto centrado (sin efecto al tocar) */
-  .heart-card{ width:min(780px, 92vw); filter: drop-shadow(0 24px 34px rgba(0,0,0,.22)); }
-  .heart-svg{ width:100%; height:auto; display:block; }
-  .heart-fill{
-    fill: url(#gPink);
-    stroke: #000; stroke-width:6px;
-    filter: drop-shadow(0 22px 28px rgba(0,0,0,.25));
-  }
+  /* Corazón grande con clip para mantener texto dentro */
+  .heart-card{width:min(860px,92vw);filter:drop-shadow(0 28px 36px rgba(0,0,0,.22))}
+  .heart-svg{width:100%;height:auto;display:block}
+  .heart-fill{fill:url(#gPink);stroke:#000;stroke-width:8px;filter:drop-shadow(0 24px 30px rgba(0,0,0,.25))}
   .heart-text{
-    width:100%; height:100%;
-    display:flex; align-items:center; justify-content:center;
-    padding: 22px 28px;
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    padding:32px 38px 40px; /* margen interno para que no toque el borde */
   }
   .heart-text p{
-    margin:0; max-width: 520px;
-    font-size: clamp(18px, 3.6vw, 24px);
-    line-height: 1.55; text-align:center; color:#1d0f12; font-weight:700;
+    margin:0;max-width:640px;
+    font-size:clamp(18px,3.2vw,26px);
+    line-height:1.5;text-align:center;color:#1d0f12;font-weight:700;
   }
 </style>
 </head>
 <body>
 
-<!-- 1) Fondo emojis estilo “primer código” -->
+<!-- Fondo -->
 <canvas id="fx"></canvas>
 
-<!-- 2) Audio -->
+<!-- Audio -->
 <audio id="bgm" src="musica.mp3" preload="auto" playsinline loop></audio>
 
-<!-- 3) Overlay de entrada -->
+<!-- Entrada -->
 <div class="gate" id="gate">
   <h1>¡TOCA PARA ENTRAR!</h1>
   <button class="enterBtn" id="enterBtn">Si me amás, toca aquí</button>
   <div class="enterHint">Y si no querés, no pasa nada si no tocás 🥺</div>
 </div>
 
-<!-- 4) Botón audio -->
-<button class="audio-toggle" id="audioToggle" aria-label="Alternar sonido">
-  <span>🔇</span>
-</button>
+<!-- Botón audio -->
+<button class="audio-toggle" id="audioToggle" aria-label="Alternar sonido"><span>🔇</span></button>
 
-<!-- 5) Escena 1 -->
+<!-- Escena 1 -->
 <section class="scene" id="scene1">
   <div class="wrap">
     <h1 class="title">¡TE AMO DEMASIADO!</h1>
 
     <div class="heart-card" id="heart1">
-      <svg class="heart-svg" viewBox="0 0 360 320" xmlns="http://www.w3.org/2000/svg">
+      <svg class="heart-svg" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg">
         <defs>
+          <path id="heartShape" d="M210,50
+             C168,8 82,28 66,114
+             c-11,64 40,116 144,206
+             c104,-90 155,-142 144,-206
+             C294,28 228,8 210,50 Z"/>
+          <clipPath id="clipHeart"><use href="#heartShape"/></clipPath>
           <linearGradient id="gPink" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%"  stop-color="#ff9ecb"/>
             <stop offset="100%" stop-color="#ff7fb0"/>
           </linearGradient>
         </defs>
-        <!-- corazón -->
-        <path class="heart-fill" d="M180,40
-             C145,5 70,22 56,96
-             c-9,56 34,100 124,176
-             c90,-76 133,-120 124,-176
-             C290,22 215,5 180,40 Z"/>
-        <!-- texto centrado dentro -->
-        <foreignObject x="20" y="60" width="320" height="220">
+
+        <!-- corazón con borde -->
+        <use href="#heartShape" class="heart-fill"/>
+        <!-- texto centrado y recortado al corazón -->
+        <foreignObject x="0" y="0" width="420" height="360" clip-path="url(#clipHeart)">
           <div xmlns="http://www.w3.org/1999/xhtml" class="heart-text">
             <p>
               Agustina, te amo demasiado. Sos lo mejor que me pasó en la vida.
-              Soy capaz de todo por ti, movería cielo, mar, tierra y aire;
+              Soy capaz de todo por ti, movería cielo, mar, tierra y aire,
               pero no soy capaz de hablarle a otra mujer, ni por aburrimiento
               ni porque no hablemos tan seguido. En serio quiero demostrarte
               que mi corazón te pertenece solo a ti y a nadie más. Te amo 🤍
@@ -146,7 +140,7 @@
 </section>
 
 <script>
-/* ====== AUDIO ====== */
+/* AUDIO */
 const audio  = document.getElementById('bgm');
 const gate   = document.getElementById('gate');
 const enter  = document.getElementById('enterBtn');
@@ -154,71 +148,36 @@ const toggle = document.getElementById('audioToggle');
 
 enter.addEventListener('click', async ()=>{
   try{
-    audio.volume = 1.0;          // 100%
-    audio.muted  = false;
+    audio.volume = 1.0; audio.muted = false;
     await audio.play();
     gate.style.display = 'none';
     toggle.textContent = '🔊';
-  }catch(e){
-    alert('Si no se escucha, tocá de nuevo para habilitar el sonido.');
-  }
+  }catch(e){ alert('Si no se escucha, tocá de nuevo para habilitar el sonido.'); }
 });
-toggle.addEventListener('click', ()=>{
-  audio.muted = !audio.muted;
-  toggle.textContent = audio.muted ? '🔇' : '🔊';
-});
+toggle.addEventListener('click', ()=>{ audio.muted = !audio.muted; toggle.textContent = audio.muted ? '🔇' : '🔊'; });
 
-/* ====== FONDO “primer código”: emojis alternando con estela ====== */
-const canvas = document.getElementById('fx');
-const ctx = canvas.getContext('2d');
+/* FONDO emojis con estela (como el primero) */
+const canvas = document.getElementById('fx'), ctx = canvas.getContext('2d');
 let W=0,H=0,dpr=1;
-function resize(){
-  dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-  W = canvas.width  = Math.floor(window.innerWidth  * dpr);
-  H = canvas.height = Math.floor(window.innerHeight * dpr);
-}
-window.addEventListener('resize', resize, {passive:true});
-resize();
+function resize(){ dpr=Math.max(1,Math.min(2,window.devicePixelRatio||1)); W=canvas.width=Math.floor(innerWidth*dpr); H=canvas.height=Math.floor(innerHeight*dpr); }
+addEventListener('resize',resize,{passive:true}); resize();
 
-const glyphs = ['💖','💗','💕','💞','💓','🐱','😺','😻','😸'];
-const cols = [];
-function initCols(){
-  cols.length = 0;
-  const colW = Math.floor(26*dpr);
-  const n = Math.ceil(W / colW);
-  for(let i=0;i<n;i++){
-    cols.push({
-      x: i*colW + colW/2,
-      y: Math.random()*-H,
-      speed: (H/8 + Math.random()*H/6), // px/s
-      step: 1/12,                        // 12 fps “stop-motion”
-      acc: 0
-    });
-  }
-}
-initCols();
-window.addEventListener('resize', initCols, {passive:true});
+const glyphs=['💖','💗','💕','💞','💓','🐱','😺','😻','😸'];
+const cols=[];
+function initCols(){ cols.length=0; const colW=Math.floor(26*dpr), n=Math.ceil(W/colW);
+  for(let i=0;i<n;i++){ cols.push({x:i*colW+colW/2,y:Math.random()*-H,speed:(H/8+Math.random()*H/6),step:1/12,acc:0}); } }
+initCols(); addEventListener('resize',initCols,{passive:true});
 
 function draw(){
-  // estela suave
-  ctx.fillStyle = 'rgba(242,230,214,0.22)';
-  ctx.fillRect(0,0,W,H);
-
+  ctx.fillStyle='rgba(242,230,214,0.22)'; ctx.fillRect(0,0,W,H);
   for(const c of cols){
-    c.acc += 1/60;
-    if(c.acc >= c.step){
-      c.y += c.speed * c.acc;
-      c.acc = 0;
-    }
-    if(c.y > H + 40*dpr) c.y = -Math.random()*H*0.3;
-
-    const emoji = glyphs[(Math.random()*glyphs.length)|0]; // cambia cada frame (alucinadito)
-    const size  = 18 + Math.random()*16;                   // tamaño varía (ligera “deformación”)
-    ctx.font = `${Math.floor(size*dpr)}px "Apple Color Emoji","Noto Color Emoji",system-ui`;
-    ctx.lineWidth = 4*dpr;
-    ctx.strokeStyle = 'rgba(0,0,0,.6)';                    // borde negro
-    ctx.strokeText(emoji, c.x, c.y);
-    ctx.fillText(emoji, c.x, c.y);
+    c.acc+=1/60; if(c.acc>=c.step){ c.y+=c.speed*c.acc; c.acc=0; }
+    if(c.y>H+40*dpr) c.y=-Math.random()*H*0.3;
+    const e= glyphs[(Math.random()*glyphs.length)|0];
+    const sz=18+Math.random()*16;
+    ctx.font=`${Math.floor(sz*dpr)}px "Apple Color Emoji","Noto Color Emoji",system-ui`;
+    ctx.lineWidth=4*dpr; ctx.strokeStyle='rgba(0,0,0,.6)';
+    ctx.strokeText(e,c.x,c.y); ctx.fillText(e,c.x,c.y);
   }
   requestAnimationFrame(draw);
 }
